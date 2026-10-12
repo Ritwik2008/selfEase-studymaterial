@@ -1,0 +1,33 @@
+{
+  "LADC": {
+    "folder": "/content/LADC",
+    "files": [
+      {
+        "name": "Electric Circuit Questions",
+        "path": "/content/LADC/practice/Electric_Circuit_Questions.pdf",
+        "type": "pdf"
+      },
+      {
+        "name": "LADC practice set",
+        "path": "/content/LADC/practice/LADC_ practice set.pdf",
+        "type": "pdf"
+      },
+      {
+        "name": "Practice set 2",
+        "path": "/content/LADC/practice/Practice set 2.pdf",
+        "type": "pdf"
+      },
+      {
+        "name": "Matrix rotation and translation formulas",
+        "path": "/content/LADC/Theory%20%26%20Formulas/matrix%20rotation%20and%20translation%20formulas.jpeg",
+        "type": "photo"
+      },
+      {
+        "name": "Unit 1 & 2 theory",
+        "path": "/content/LADC/Theory%20%26%20Formulas/Unit1%262%20theory%20.pdf",
+        "type": "pdf"
+      }
+    ],
+    "links": []
+  }
+}

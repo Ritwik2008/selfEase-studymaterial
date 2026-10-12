@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>File Repository</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { margin: 0; font-size: 1.5rem; color: #1a73e8; }
+        
+        .subject-section {
+            margin-bottom: 40px;
+        }
+        .subject-title {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid #1a73e8;
+            padding-left: 15px;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+        }
+        
+        .item-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+        .item-card:hover { transform: translateY(-2px); }
+        
+        .item-info { margin-bottom: 15px; }
+        .item-name { 
+            font-weight: 600; 
+            font-size: 1rem; 
+            display: block;
+            overflow-wrap: anywhere;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        .badge-pdf { background: #fde8e8; color: #c81e1e; }
+        .badge-photo { background: #e1effe; color: #1e429f; }
+        .badge-video { background: #fdf6b2; color: #723b13; }
+        .badge-link { background: #def7ec; color: #03543f; }
+
+        .btn {
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #dadce0;
+            background: #fff;
+            color: #1a73e8;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #f8f9fa; }
+        
+        .btn-download-all {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+        }
+        .btn-download-all:hover { background: #1557b0; }
+
+        @media (max-width: 600px) {
+            .subject-title { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .btn-download-all { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Resource Repository</h1>
+    </div>
+</header>
+
+<main class="container" id="app">
+    <div style="text-align: center;">Loading resources from JSON...</div>
+</main>
+
+<script>
+    const APP_CONTAINER = document.getElementById('app');
+
+    async function loadData() {
+        try {
+            // Fetching the external JSON file
+            const response = await fetch('data.json');
+            if (!response.ok) throw new Error('Failed to load data.json');
+            const data = await response.json();
+            render(data);
+        } catch (err) {
+            APP_CONTAINER.innerHTML = `<p style="color:red">Error: ${err.message}. Please ensure data.json exists in the same directory.</p>`;
+        }
+    }
+
+    function render(data) {
+        APP_CONTAINER.innerHTML = '';
+        
+        for (const [key, subject] of Object.entries(data)) {
+            const section = document.createElement('section');
+            section.className = 'subject-section';
+
+            // Header for each subject
+            const header = document.createElement('div');
+            header.className = 'subject-title';
+            header.innerHTML = `
+                <strong>${key.toUpperCase()}</strong>
+                <button class="btn btn-download-all" onclick="downloadAll('${key}')">Download All Local Files</button>
+            `;
+            section.appendChild(header);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+
+            // Merge local files and online links for display
+            const allItems = [
+                ...subject.files.map(f => ({...f, isLocal: true})),
+                ...subject.links.map(l => ({...l, name: l.title, path: l.url, isLocal: false}))
+            ];
+
+            allItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                
+                const typeClass = item.type.includes('pdf') ? 'badge-pdf' : 
+                                  item.type.includes('photo') ? 'badge-photo' : 
+                                  item.type.includes('video') ? 'badge-video' : 'badge-link';
+
+                card.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-name">${item.name}</span>
+                        <span class="badge ${typeClass}">${item.type}</span>
+                    </div>
+                    <a href="${item.path}" class="btn" ${item.isLocal ? 'download' : 'target="_blank"'}>
+                        ${item.isLocal ? 'Download' : 'Open Link'}
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            APP_CONTAINER.appendChild(section);
+        }
+
+        // Expose download function to global scope
+        window.downloadAll = async function(subjectKey) {
+            const files = data[subjectKey].files;
+            for (const file of files) {
+                const a = document.createElement('a');
+                a.href = file.path;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                await new Promise(r => setTimeout(r, 600)); // Delay for browser safety
+            }
+        };
+    }
+
+    loadData();
+</script>
+
+</body>
+</html>
