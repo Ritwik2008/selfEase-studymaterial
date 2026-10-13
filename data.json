@@ -1,4 +1,3 @@
-
 {
   "LADC": {
     "folder": "/content/LADC",
@@ -20,12 +19,12 @@
       },
       {
         "name": "Matrix rotation and translation formulas",
-        "path": "/content/LADC/Theory%20%26%20Formulas/matrix%20rotation%20and%20translation%20formulas.jpeg",
+        "path": "/content/LADC/Theory & Formulas/matrix rotation and translation formulas.jpeg",
         "type": "photo"
       },
       {
         "name": "Unit 1 & 2 theory",
-        "path": "/content/LADC/Theory%20%26%20Formulas/Unit1%262%20theory%20.pdf",
+        "path": "/content/LADC/Theory & Formulas/Unit1&2 theory .pdf",
         "type": "pdf"
       }
     ],
@@ -44,6 +43,7 @@
         "path": "/content/DELD/Digital Electronics and Logic Design.docx",
         "type": "docx"
       }
-    ]
+    ],
+    "links": []
   }
 }
