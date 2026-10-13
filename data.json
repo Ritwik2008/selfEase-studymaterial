@@ -29,5 +29,16 @@
       }
     ],
     "links": []
-  }
+  }, 
+  "DELD": {
+    "folder": "/content/DELD",
+    "files": [{
+        "name": "Chapter II theory",
+        "path": "/content/DELD/Chapter II.pptx",
+        "type": "ppt"
+      },{
+        "name": "DELD Course pointers",
+        "path": "/content/DELD/Digital Electronics and Logic Design.docx",
+        "type": "docx"
+      }]
 }
