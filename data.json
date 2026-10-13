@@ -1,3 +1,4 @@
+
 {
   "LADC": {
     "folder": "/content/LADC",
@@ -29,16 +30,20 @@
       }
     ],
     "links": []
-  }, 
+  },
   "DELD": {
     "folder": "/content/DELD",
-    "files": [{
+    "files": [
+      {
         "name": "Chapter II theory",
         "path": "/content/DELD/Chapter II.pptx",
         "type": "ppt"
-      },{
+      },
+      {
         "name": "DELD Course pointers",
         "path": "/content/DELD/Digital Electronics and Logic Design.docx",
         "type": "docx"
-      }]
+      }
+    ]
+  }
 }
